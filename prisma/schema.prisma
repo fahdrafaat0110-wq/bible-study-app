@@ -1,0 +1,104 @@
+
+// ============================================================
+// دراسة الكتاب المقدس - Database Schema
+//
+// Business rules:
+// 1. ONE activity record per member per meeting.
+// 2. Age is derived from date_of_birth.
+// 3. Meetings preserve historical records.
+// 4. Only approved users can modify application data.
+// 5. Only the Super Admin can manage user access.
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Super Admin
+model Admin {
+  id        String   @id @default(cuid())
+  googleId  String   @unique
+  email     String   @unique
+  name      String?
+  image     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([googleId])
+  @@map("admins")
+}
+
+// Members
+model Member {
+  id          String           @id @default(cuid())
+  fullName    String           @map("full_name")
+  phoneNumber String           @map("phone_number")
+  dateOfBirth DateTime         @map("date_of_birth")
+  college     String
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  activities MemberActivity[]
+
+  @@unique([fullName, phoneNumber], name: "member_identity_unique")
+  @@index([fullName])
+  @@index([phoneNumber])
+  @@map("members")
+}
+
+// Meetings
+model Meeting {
+  id          String           @id @default(cuid())
+  title       String
+  meetingDate DateTime         @map("meeting_date")
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  activities MemberActivity[]
+
+  @@index([meetingDate])
+  @@map("meetings")
+}
+
+// Member Activities
+model MemberActivity {
+  id                  String   @id @default(cuid())
+  memberId            String   @map("member_id")
+  meetingId           String   @map("meeting_id")
+
+  attendanceStatus    Boolean  @default(false) @map("attendance_status")
+  bibleReadingStatus  Boolean  @default(false) @map("bible_reading_status")
+  spiritualNoteStatus Boolean  @default(false) @map("spiritual_note_status")
+  preparationStatus   Boolean  @default(false) @map("preparation_status")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  member  Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, meetingId], name: "member_meeting_unique")
+  @@index([memberId])
+  @@index([meetingId])
+  @@index([memberId, meetingId])
+  @@map("member_activities")
+}
+
+// User Access Requests
+model AccessRequest {
+  id        String   @id @default(cuid())
+  googleId  String   @unique @map("google_id")
+  email     String   @unique
+  name      String?
+  image     String?
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@map("access_requests")
+}

@@ -1,0 +1,205 @@
+/* ============================================================
+   دراسة الكتاب الصحيح — Global Styles (RTL Arabic First)
+   Tailwind CSS base + custom design system
+   ============================================================ */
+
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styling */
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  @apply bg-bg text-text antialiased;
+  font-family: Cairo, Tajawal, sans-serif;
+  min-height: 100vh;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Focus styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-card;
+}
+
+/* Animation keyframes */
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.animation-fadeSlide { animation: fadeSlide 0.25s ease-out; }
+.animation-fadeIn { animation: fadeIn 0.2s ease-out; }
+.animation-pulseSoft { animation: pulseSoft 1.4s ease-in-out infinite; }
+
+/* Visually hidden for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Card component */
+.card {
+  @apply bg-card rounded-xl shadow-card border border-border;
+}
+
+/* Button variants */
+.btn-primary {
+  @apply bg-primary text-white px-5 py-2.5 rounded-xl font-semibold
+         hover:bg-primary-dark active:scale-[0.98] transition-all duration-150
+         disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-ghost {
+  @apply bg-transparent text-text px-4 py-2 rounded-xl font-medium
+         hover:bg-gray-100 active:scale-[0.98] transition-all duration-150;
+}
+
+.btn-ghost-sm {
+  @apply bg-transparent text-muted px-2 py-1 rounded-lg font-medium
+         hover:bg-gray-100 hover:text-text transition-all duration-150 text-sm;
+}
+
+/* Input styles */
+.input {
+  @apply w-full bg-white border border-border text-text placeholder-muted
+         px-4 py-3 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20
+         transition-all duration-150;
+}
+
+.input-small {
+  @apply px-3 py-2 text-sm rounded-lg;
+}
+
+/* Checkbox styling */
+.checkbox {
+  @apply w-5 h-5 rounded border-2 border-border bg-white
+         text-primary checked:border-primary checked:bg-primary
+         focus:ring-2 focus:ring-primary/20
+         transition-all duration-150 cursor-pointer;
+}
+
+/* Table styles */
+.table-container {
+  @apply overflow-x-auto rounded-xl border border-border bg-card;
+}
+
+.table {
+  @apply w-full text-right;
+}
+
+.table th {
+  @apply px-4 py-3 text-xs font-semibold text-muted uppercase tracking-wider bg-gray-50 border-b border-border;
+}
+
+.table td {
+  @apply px-4 py-3 text-sm border-b border-border/50;
+}
+
+.table tbody tr:hover {
+  @apply bg-gray-50;
+}
+
+.table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+/* Badge styles */
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-success {
+  @apply bg-green-50 text-success border border-green-100;
+}
+
+.badge-incomplete {
+  @apply bg-gray-100 text-muted border border-gray-200;
+}
+
+.badge-primary {
+  @apply bg-blue-50 text-primary border border-blue-100;
+}
+
+.badge-error {
+  @apply bg-red-50 text-error border border-red-100;
+}
+
+/* Toast notification */
+.toast {
+  @apply fixed bottom-6 right-6 z-50 min-w-[280px] max-w-md
+         bg-card rounded-xl shadow-card-lg border border-border
+         px-4 py-3 flex items-center gap-3 animate-fadeSlide;
+}
+
+.toast-success { @apply border-l-4 border-success; }
+.toast-error { @apply border-l-4 border-error; }
+.toast-info { @apply border-l-4 border-primary; }
+
+/* Modal overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/40 backdrop-blur-sm z-40;
+  animation: fadeSlide 0.25s ease-out;
+}
+
+.modal-content {
+  @apply bg-card rounded-2xl shadow-card-lg max-w-md w-full mx-4;
+}
+
+/* Modal overlay inside modal */
+.modal-backdrop {
+  @apply fixed inset-0 bg-black/30 z-40;
+}
+
+/* Loading spinner */
+.spinner {
+  @apply w-5 h-5 animate-spin rounded-full border-2 border-primary border-t-transparent;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "دراسة الكتاب الصحيح",
+  "short_name": "الكتاب الصحيح",
+  "description": "نظام إدارة الحضور وقراءة الإنجيل والنوتة الروحية",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F3F4F6",
+  "theme_color": "#2563EB"
+}
